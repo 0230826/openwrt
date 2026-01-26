@@ -1,9 +1,50 @@
-<%# LuCI 模板注释 %>
-<%+header%>  <!-- 引入 OpenWrt 后台头部样式 -->
+<%# LuCI 页面模板，兼容新版/旧版LuCI %>
+<%+header%>
 
-<h2><%:My Custom App%></h2>  <!-- 多语言支持写法，显示为 My Custom App -->
-<div class="cbi-section">
-    <p><%:Hello! This is my first OpenWrt LuCI App.%></p>
+<h2 name="content"><%:My Custom Application%></h2>
+
+<!-- 表单：POST请求到命令执行接口 -->
+<form method="post" action="<%=url('admin/mypackage/do_command')%>" id="cmd-form">
+    <div class="cbi-section">
+        <!-- 输入框：传递参数到后台 -->
+        <label class="cbi-value-title"><%:Input Parameter%></label>
+        <input type="text" name="cmd_param" id="cmd_param" placeholder="Enter your parameter here..." value="test123" class="cbi-input-text">
+        
+        <!-- 执行按钮 -->
+        <input type="submit" class="cbi-button cbi-button-apply" value="<%:Execute Command%>">
+    </div>
+</form>
+
+<!-- 结果显示区域：实时展示命令输出 -->
+<div class="cbi-section" style="margin-top:20px;">
+    <label class="cbi-value-title"><%:Command Result%></label>
+    <pre id="result-display" style="padding:10px;background:#f5f5f5;border-radius:5px;"></pre>
 </div>
 
-<%+footer%>  <!-- 引入 OpenWrt 后台底部样式 -->
+<!-- JS 处理：异步提交表单 + 显示结果，无刷新页面 -->
+<script type="text/javascript">
+document.getElementById("cmd-form").addEventListener("submit", function(e) {
+    e.preventDefault(); // 阻止页面刷新
+    var param = document.getElementById("cmd_param").value;
+    var resultDiv = document.getElementById("result-display");
+    
+    // 显示加载状态
+    resultDiv.textContent = "Executing command...";
+    
+    // 异步POST请求
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "<%=url('admin/mypackage/do_command')%>", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            // 显示命令执行结果
+            resultDiv.textContent = xhr.responseText;
+        } else if (xhr.readyState == 4) {
+            resultDiv.textContent = "Request failed! Status: " + xhr.status;
+        }
+    };
+    xhr.send("cmd_param=" + encodeURIComponent(param));
+});
+</script>
+
+<%+footer%>
