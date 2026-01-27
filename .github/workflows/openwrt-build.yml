@@ -35,7 +35,7 @@ jobs:
           # 复制自定义包到源码 package 目录
           # cp -rf ../luci-app-mypackage ./openwrt/package/
           # 复制 config.seed 到源码根目录
-          cp ../config.seed ./openwrt/
+          cp ./config.seed ./openwrt/
           cd openwrt
           # 导入配置并补全默认选项
           cat config.seed > .config
