@@ -45,10 +45,20 @@ jobs:
       - name: 4. 开始编译固件
         run: |
           cd openwrt
-          # 多线程编译（-j 后的数字=CPU核心数，默认自动适配）
-          make -j$(nproc) download V=s
-          make -j$(nproc) V=s
           set -e
+          # 第一步：单独构建交叉编译工具链（关键）
+          make toolchain/install -j1 V=s
+          # 第二步：刷新环境变量，确保编译器被识别
+          export PATH=$PATH:$(pwd)/staging_dir/toolchain-mipsel_24kc_musl/bin
+          # 第三步：再编译软件包和固件
+          make package/compile -j1 V=s 2>&1 | tee build.log
+          # 检查编译器是否生成
+          ls -l $(pwd)/staging_dir/toolchain-mipsel_24kc_musl/bin/mipsel-openwrt-linux-musl-gcc
+          # 若不存在，直接报错停止
+          if [ ! -f "$(pwd)/staging_dir/toolchain-mipsel_24kc_musl/bin/mipsel-openwrt-linux-musl-gcc" ]; then
+            echo "Toolchain build failed!"
+            exit 1
+          fi
 
       - name: 5. 上传编译产物
         uses: actions/upload-artifact@v4
