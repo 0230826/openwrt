@@ -32,7 +32,7 @@ jobs:
       - name: Download Source & Feeds (With Retry & Mirror)
         run: |
           # 替换 OpenWrt 官方源为 GitHub 镜像，解决 503 错误
-          sed -i 's|https://git.openwrt.org|https://github.com/openwrt|g' feeds.conf.default || { echo "Replace Feed Source Error!"; exit 1; }
+          sed -i 's|https://git.openwrt.org|https://github.com/0230826/openwrt|g' feeds.conf.default || { echo "Replace Feed Source Error!"; exit 1; }
           
           # Feeds 更新重试机制：最多3次，间隔10秒
           retry=3
@@ -81,3 +81,4 @@ jobs:
           path: bin/targets/
 
           retention-days: 30
+
