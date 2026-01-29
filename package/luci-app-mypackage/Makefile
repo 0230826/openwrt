@@ -32,5 +32,3 @@ endef
 
 # 强制报错停止，编译流程控制
 $(eval $(call BuildPackage,$(PKG_NAME)))
-
- 
