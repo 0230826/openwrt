@@ -35,7 +35,7 @@ jobs:
       - name: Copy custom package to OpenWrt package dir
         run: |
           # 方式1：如果你的包在当前仓库的package/luci-app-mypackage，直接拷贝（推荐）
-          cp -r ./package/luci-app-mypackage ./openwrt/package/
+          # cp -r ./package/luci-app-mypackage ./openwrt/package/
           # 方式2：如果包在其他仓库，用git clone拉取（按需替换）
           # git clone https://你的仓库/luci-app-mypackage.git ./openwrt/package/luci-app-mypackage
 
