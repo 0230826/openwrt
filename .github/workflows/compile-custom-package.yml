@@ -54,6 +54,14 @@ jobs:
           make download -j$(nproc)  # 预下载所有依赖源码，避免编译时卡顿
           find dl -size -1024c -delete  # 删除空文件，防止编译报错
 
+      # 步骤5.1：构建 OpenWrt 所需的 host 工具（修复 CI 中 staging_dir/host/bin 缺失的问题）
+      - name: Build host tools required by OpenWrt
+        working-directory: ./openwrt
+        run: |
+          # 构建/安装 host 工具，会在 staging_dir/host/bin 下生成 openssl、sed 等可执行程序
+          # 在 CI 上使用 -j1 更稳健，避免并行编译导致不可预期的竞态问题
+          make tools/install -j1
+      
       # 步骤6：单独编译自定义包luci-app-mypackage（核心步骤）
       - name: Compile custom package only
         working-directory: ./openwrt
