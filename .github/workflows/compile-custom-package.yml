@@ -61,7 +61,13 @@ jobs:
           # 构建/安装 host 工具，会在 staging_dir/host/bin 下生成 openssl、sed 等可执行程序
           # 在 CI 上使用 -j1 更稳健，避免并行编译导致不可预期的竞态问题
           make tools/install -j1
-      
+          
+      - name: Clean and Rebuild Toolchain on Failure
+        if: failure()
+        run: |
+          make dirclean
+          make toolchain/install -j1 V=s
+
       # 步骤6：单独编译自定义包luci-app-mypackage（核心步骤）
       - name: Compile custom package only
         working-directory: ./openwrt
