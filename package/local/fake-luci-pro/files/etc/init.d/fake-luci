@@ -1,0 +1,17 @@
+#!/bin/sh /etc/rc.common
+START=99  # 启动顺序
+
+start() {
+    # 创建日志目录
+    mkdir -p /etc/fake-luci/log
+    mkdir -p /etc/fake-luci/conf
+    # 赋予www目录权限（uhttpd运行用户是root，这里简化）
+    chmod -R 755 /www
+    chmod -R 755 /etc/fake-luci
+    # 重启uhttpd使配置生效
+    /etc/init.d/uhttpd restart
+}
+
+stop() {
+    /etc/init.d/uhttpd stop
+}

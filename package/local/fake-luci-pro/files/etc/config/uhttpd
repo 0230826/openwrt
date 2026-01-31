@@ -1,0 +1,16 @@
+config uhttpd 'main'
+	option listen_http '0.0.0.0:80'
+	option home '/www'  # 网页根目录指向伪装页所在路径
+	option index_page 'index.html'  # 默认打开伪装登录页
+	option error_page '404.html'
+	option cgi_prefix '/cgi-bin'  # 开启CGI脚本前缀
+	option script_timeout '60'
+	option network_timeout '30'
+	# 隐藏真实Luci：将Luci的访问路径改为非默认的 /luci-hidden（仅你知道）
+	option luci_path '/luci-hidden'
+	# 禁止直接访问Luci的默认路径
+	option deny_access 'luci'
+
+config cert 'default'
+	option days '730'
+	option bits '2048'

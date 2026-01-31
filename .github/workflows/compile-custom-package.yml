@@ -1,4 +1,4 @@
-# OpenWrt 单独编译自定义LuCI包（luci-app-mypackage）
+# OpenWrt 单独编译自定义LuCI包（fake-luci-pro）
 name: Compile OpenWrt Custom Package
 
 # 触发方式：手动触发（推荐，开发测试按需执行）+ 推送到main分支时触发（可选）
@@ -7,7 +7,7 @@ on:
   push:
     branches: [ main ]
     paths:  # 仅当自定义包相关文件修改时，推送才触发编译，避免无用编译
-      - 'package/luci-app-mypackage/**'
+      - 'package/fake-luci-pro/**'
       - '.github/workflows/compile-custom-package.yml'
 
 # 作业配置：ubuntu最新版（OpenWrt编译官方推荐）
@@ -31,13 +31,13 @@ jobs:
           path: openwrt                # 源码存放目录，固定为openwrt
           fetch-depth: 1
 
-      # 步骤3：将你的自定义包luci-app-mypackage放到OpenWrt源码的package目录下
+      # 步骤3：将你的自定义包fake-luci-pro放到OpenWrt源码的package目录下
       - name: Copy custom package to OpenWrt package dir
         run: |
-          # 方式1：如果你的包在当前仓库的package/luci-app-mypackage，直接拷贝（推荐）
-          # cp -r ./package/luci-app-mypackage ./openwrt/package/
+          # 方式1：如果你的包在当前仓库的package/fake-luci-pro，直接拷贝（推荐）
+          # cp -r ./package/fake-luci-pro ./openwrt/package/
           # 方式2：如果包在其他仓库，用git clone拉取（按需替换）
-          # git clone https://你的仓库/luci-app-mypackage.git ./openwrt/package/luci-app-mypackage
+          # git clone https://你的仓库/fake-luci-pro.git ./openwrt/package/fake-luci-pro
 
       # 步骤4：更新并安装OpenWrt Feeds（必须，你的包依赖luci-compat/luci-lib-nixio来自luci feeds）
       - name: Update and install OpenWrt Feeds
@@ -68,21 +68,21 @@ jobs:
           make dirclean
           make toolchain/install -j1 V=s
 
-      # 步骤6：单独编译自定义包luci-app-mypackage（核心步骤）
+      # 步骤6：单独编译自定义包fake-luci-pro（核心步骤）
       - name: Compile custom package only
         working-directory: ./openwrt
         run: |
           # 核心命令：编译指定包，V=s输出详细日志（排错用），-j指定线程（自动拉满）
-          make package/luci-app-mypackage/compile V=s -j$(nproc)
+          make package/fake-luci-pro/compile V=s -j$(nproc)
           # 可选：如果需要重新编译（清理旧编译文件），用下面的命令
-          # make package/luci-app-mypackage/clean && make package/luci-app-mypackage/compile V=s -j$(nproc)
+          # make package/fake-luci-pro/clean && make package/fake-luci-pro/compile V=s -j$(nproc)
 
       # 步骤7：上传编译好的ipk包作为Action产物（可直接下载到本地/设备）
       - name: Upload IPK package
         uses: actions/upload-artifact@v4
         with:
-          name: luci-app-mypackage-ipk
+          name: fake-luci-pro-ipk
           # 匹配所有架构的ipk包（也可指定架构，如bin/armvirt/64/packages/luci/）
           path: |
-            ./openwrt/bin/**/packages/**/luci-app-mypackage_*.ipk
-            ./openwrt/bin/**/packages/**/luci-app-mypackage_*.buildinfo
+            ./openwrt/bin/**/packages/**/fake-luci-pro_*.ipk
+            ./openwrt/bin/**/packages/**/fake-luci-pro_*.buildinfo

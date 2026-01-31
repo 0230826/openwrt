@@ -1,0 +1,41 @@
+<%+header%>
+<style>
+    /* 简单样式，模仿路由器管理页风格 */
+    .fake-admin-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: #f9f9f9;
+    }
+    .btn {
+        padding: 8px 16px;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>
+
+<div class="fake-admin-container">
+    <h2>路由器管理中心</h2>
+    <p>欢迎使用简易管理界面</p>
+    
+    <!-- 示例：简单设置选项（仅前端展示，可自行扩展后端逻辑） -->
+    <div class="setting-item">
+        <label>WiFi名称：</label>
+        <input type="text" value="MyWiFi" readonly>
+        <button class="btn">保存</button>
+    </div>
+
+    <div class="setting-item">
+        <label>当前连接设备：</label>
+        <span>3台设备在线</span>
+    </div>
+
+    <p style="color: #666; margin-top: 30px;">© 2025 路由器管理系统</p>
+</div>
+
+<%+footer%>

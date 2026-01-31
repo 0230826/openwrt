@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>简易路由器管理</title>
+    <meta charset="utf-8">
+</head>
+<body>
+    <h2>简易管理中心</h2>
+    <h3>WiFi设置</h3>
+    <form action="/cgi-bin/wifi.cgi" method="post">
+        WiFi名称：<input type="text" name="ssid" required><br><br>
+        WiFi密码：<input type="password" name="wifi_pwd" required><br><br>
+        <input type="submit" value="保存WiFi设置">
+    </form>
+    <br>
+    <button onclick="window.location.href='/cgi-bin/reboot.cgi'">重启路由器</button>
+</body>
+</html>
