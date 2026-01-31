@@ -87,7 +87,8 @@ jobs:
         working-directory: ./openwrt
         run: |
           set -e
-          make tools/install -j1 V=s
+          make tools/install -j$(nproc) V=s
+          make toolchain/install -j$(nproc) V=s
 
       # 步骤9：失败后清理重建工具链
       - name: Clean & Rebuild Toolchain on Failure
