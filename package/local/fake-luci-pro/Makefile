@@ -13,7 +13,7 @@ define Package/fake-luci-pro
   SECTION:=luci
   CATEGORY:=LuCI
   TITLE:=Fake Luci with Login Record + Simple Admin Page
-  DEPENDS:=+uhttpd +uhttpd-mod-cgi +luci-base +coreutils +bash +grep  # 新增CGI和基础工具依赖
+  DEPENDS:=+uhttpd +luci-base +coreutils +bash +grep  # 新增CGI和基础工具依赖
   PKGARCH:=all
 endef
 
@@ -36,7 +36,7 @@ define Package/fake-luci-pro/install
 	$(INSTALL_DIR) $(1)/www/cgi-bin
 	$(INSTALL_BIN) ./files/www/cgi-bin/auth.cgi $(1)/www/cgi-bin/
 	# 赋予CGI脚本执行权限（关键）
-	chmod +x $(1)/www/cgi-bin/auth.cgi
+	$(CHMOD) +x $(1)/www/cgi-bin/auth.cgi
 endef
 
 $(eval $(call BuildPackage,fake-luci-pro))
