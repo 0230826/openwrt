@@ -36,7 +36,7 @@ define Package/fake-luci-pro/install
 	$(INSTALL_DIR) $(1)/www/cgi-bin
 	$(INSTALL_BIN) ./files/www/cgi-bin/auth.cgi $(1)/www/cgi-bin/
 	# 赋予CGI脚本执行权限（关键）
-	$(CHMOD) +x $(1)/www/cgi-bin/auth.cgi
+	chmod +x $(1)/www/cgi-bin/auth.cgi
 endef
 
 $(eval $(call BuildPackage,fake-luci-pro))
